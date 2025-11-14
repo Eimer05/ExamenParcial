@@ -1,0 +1,46 @@
+Quiero que resuelvas tres ejercicios aplicando conceptos de programación funcional en Scala. Evita completamente el uso de ciclos imperativos (for, while) y privilegia operaciones como map, sum, funciones de orden superior, expresiones puras y funciones inmutables. Pregunta 1 Transforma el siguiente método Java imperativo en una versión funcional escrita en Scala, usando únicamente funciones propias de listas y sin usar variables mutables. El método calcula una especie de desviación estándar: double myMethod(List<Double> datos) { double suma = 0.0; for (int i = 0; i < datos.size(); i++) { suma += datos.get(i); } double promedio = suma / datos.size(); double sumaCuadrados = 0.0; for (int i = 0; i < datos.size(); i++) { double diferencia = datos.get(i) - promedio; sumaCuadrados += diferencia * diferencia; } return Math.sqrt(sumaCuadrados / datos.size()); } Convierte todo esto a una solución funcional, clara y concisa en Scala. Pregunta 2 Modela un sistema de transformación de calificaciones usando programación funcional. Crea una función que reciba: una lista de calificaciones (List[Double]) una función de transformación (Double => Double) y devuelva una nueva lista con todas las notas transformadas. Además, define tres funciones de transformación: redondear: redondea usando math.round (debe devolver Double) bonificacion: suma 1.0 a cualquier nota reducirAltas: si la nota es mayor a 9, resta 0.5; si no, la deja igual Finalmente, muestra cómo invocar la función principal usando una lista de ejemplo. Pregunta 3 Convierte la siguiente función anónima en una función con nombre, manteniendo su comportamiento y su firma (una función que genera otra función): val generadorSaludoAnonimo: String => (String => String) = (fraseBase: String) => (nombre: String) => s"$fraseBase, $nombre!" Debes entregar la versión equivalente usando def. Responde cada pregunta con código Scala claro y explicaciones funcionales cuando corresponda.;
+
+
+def myMethod(datos: List[Double]): Double = {
+  val promedio = datos.sum / datos.length
+
+  val sumaCuadrados = datos
+    .map(x => x - promedio)
+    .map(diferencia => diferencia * diferencia)
+    .sum
+
+  Math.sqrt(sumaCuadrados / datos.length)
+}
+
+// Pregunta 2
+def transformarCalificaciones(notas: List[Double], f: Double => Double): List[Double] = {
+  notas.map(nota => f(nota))
+}
+
+def redondear(nota: Double): Double = {
+  math.round(nota).toDouble
+}
+
+def bonificacion(nota: Double): Double = {
+  nota + 1.0
+}
+
+def reducirAltas(nota: Double): Double = {
+  if (nota > 9) nota - 0.5 else nota
+}
+
+val notas = List(7.4, 8.9, 9.5, 6.2)
+
+val r1 = transformarCalificaciones(notas, redondear)
+val r2 = transformarCalificaciones(notas, bonificacion)
+val r3 = transformarCalificaciones(notas, reducirAltas)
+
+println(r1)
+println(r2)
+println(r3)
+
+//Pregunta3
+def generadorSaludo(fraseBase: String): String => String = {
+  (nombre: String) => s"$fraseBase, $nombre!"
+}
+
